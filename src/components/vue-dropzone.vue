@@ -146,7 +146,7 @@ export default {
       vm.$emit("vdropzone-success", file, response);
       if (vm.isS3) {
         if (vm.isS3OverridesServerPropagation) {
-          vm.$emit("vdropzone-s3-upload-success", response);
+          vm.$emit("vdropzone-success", file, response);
         }
         if (vm.wasQueueAutoProcess) vm.setOption("autoProcessQueue", false);
       }

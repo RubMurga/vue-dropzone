@@ -69,7 +69,7 @@ export default {
       request.onload = function() {
         if (request.status == 200) {
           resolve({
-            success: true,
+            success: file,
             message: response.postEndpoint
           });
         } else {
