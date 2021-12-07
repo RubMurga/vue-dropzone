@@ -1,5 +1,9 @@
 <template>
-  <div :id="id" ref="dropzoneElement" :class="{ 'vue-dropzone dropzone': includeStyling }">
+  <div
+    :id="id"
+    ref="dropzoneElement"
+    :class="{ 'vue-dropzone dropzone': includeStyling }"
+  >
     <div v-if="useCustomSlot" class="dz-message">
       <slot>Drop files here to upload</slot>
     </div>
@@ -142,12 +146,7 @@ export default {
       vm.$emit("vdropzone-success", file, response);
       if (vm.isS3) {
         if (vm.isS3OverridesServerPropagation) {
-          var xmlResponse = new window.DOMParser().parseFromString(
-            response,
-            "text/xml"
-          );
-          var s3ObjectLocation = xmlResponse.firstChild.children[0].innerHTML;
-          vm.$emit("vdropzone-s3-upload-success", s3ObjectLocation);
+          vm.$emit("vdropzone-s3-upload-success", response);
         }
         if (vm.wasQueueAutoProcess) vm.setOption("autoProcessQueue", false);
       }
