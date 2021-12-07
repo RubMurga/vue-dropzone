@@ -70,7 +70,7 @@ export default {
         if (request.status == 200) {
           resolve({
             success: true,
-            message: response.postEndpoint
+            message: request.responseURL
           });
         } else {
           var s3Error = new window.DOMParser().parseFromString(
