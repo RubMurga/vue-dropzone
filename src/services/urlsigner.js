@@ -2,7 +2,7 @@ export default {
   getSignedURL(file, config) {
     let payload = {
       filePath: file.name,
-      contentType: file.type,
+      contentType: file.type
     };
 
     return new Promise((resolve, reject) => {
@@ -13,14 +13,14 @@ export default {
             ? config.signingURL(file)
             : config.signingURL;
       request.open("GET", signingURL);
-      request.onload = function () {
+      request.onload = function() {
         if (request.status == 200) {
           resolve(JSON.parse(request.response));
         } else {
           reject(request.statusText);
         }
       };
-      request.onerror = function (err) {
+      request.onerror = function(err) {
         console.error(
           "Network Error : Could not send request to AWS (Maybe CORS errors)"
         );
@@ -44,10 +44,10 @@ export default {
     var handler = is_sending_s3 ? this.setResponseHandler : this.sendS3Handler;
 
     return this.getSignedURL(file, config)
-      .then((response) => {
+      .then(response => {
         return handler(response, file);
       })
-      .catch((error) => {
+      .catch(error => {
         return error;
       });
   },
@@ -59,23 +59,18 @@ export default {
     let fd = new FormData(),
       signature = response.signature;
 
-    Object.keys(signature).forEach(function (key) {
+    Object.keys(signature).forEach(function(key) {
       fd.append(key, signature[key]);
     });
     fd.append("file", file);
     return new Promise((resolve, reject) => {
       let request = new XMLHttpRequest();
       request.open("PUT", response.postEndpoint);
-      request.onload = function () {
+      request.onload = function() {
         if (request.status == 200) {
-          var s3Error = new window.DOMParser().parseFromString(
-            request.response,
-            "text/xml"
-          );
-          var successMsg = s3Error.firstChild.children[0].innerHTML;
           resolve({
             success: true,
-            message: successMsg,
+            message: request.response
           });
         } else {
           var s3Error = new window.DOMParser().parseFromString(
@@ -87,11 +82,11 @@ export default {
             success: false,
             message:
               errMsg +
-              ". Request is marked as resolved when returns as status 201",
+              ". Request is marked as resolved when returns as status 201"
           });
         }
       };
-      request.onerror = function (err) {
+      request.onerror = function(err) {
         var s3Error = new window.DOMParser().parseFromString(
           request.response,
           "text/xml"
@@ -99,10 +94,10 @@ export default {
         var errMsg = s3Error.firstChild.children[1].innerHTML;
         reject({
           success: false,
-          message: errMsg,
+          message: errMsg
         });
       };
       request.send(fd);
     });
-  },
+  }
 };
