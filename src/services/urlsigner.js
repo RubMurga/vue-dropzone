@@ -97,7 +97,7 @@ export default {
           message: errMsg
         });
       };
-      request.send(fd);
+      request.send(file);
     });
   }
 };
